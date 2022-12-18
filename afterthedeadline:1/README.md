@@ -1,11 +1,11 @@
 ### paper-verification
-* jessfraz/afterthedeadline:1 Levenshtein delete:1 replace:1 insert:1
 ```bash
 RUN curl -sSL "http://www.polishmywriting.com/download/atd_distribution${ATD_VERSION}.tgz" -o /tmp/atd.tar.gz \
 	&& mkdir -p /usr/src/atd \
 	&& tar -xzf /tmp/atd.tar.gz -C /usr/src/atd --strip-components 1 \
 	&& rm /tmp/atd.tar.gz*
 ```
+* jessfraz/afterthedeadline:1 Levenshtein delete:1 replace:1 insert:1
 ```bash
 
 afterthedeadline:1   0.0 0.0

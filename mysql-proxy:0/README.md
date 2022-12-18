@@ -1,11 +1,12 @@
 ### paper-verification
-* vimagick/mysql-proxy:0 Levenshtein delete:1 replace:1 insert:1
+
 ```bash
 RUN set -xe \
     && apt-get update \
     && apt-get install -y mysql-proxy \
     && rm -rf /var/lib/apt/lists/*
 ```
+* vimagick/mysql-proxy:0 Levenshtein delete:1 replace:1 insert:1
 ```bash
 
 mysql-proxy:0        0.0 0.0
