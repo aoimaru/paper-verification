@@ -55,3 +55,17 @@ drone-scp-arm:0      1.25 3.5
 cmus:0               1.25 3.5
 ```
 
+* jessfraz/afterthedeadline:1 Jaro Winkler
+```bash
+
+webgoat:0            0.96 2.4
+openhab:0            0.6499999999999999 1.8333333333333333
+privoxy:0            0.6499999999999999 4.333333333333333
+mpd:0                0.625 3.5
+tesseract:0          0.625 3.75
+errbot:1             0.625 3.75
+cronicle:0           0.575 3.0
+wafw00f:0            0.575 3.0
+dnsmasq:0            0.575 3.0
+ndscheduler:0        0.575 3.5
+```
