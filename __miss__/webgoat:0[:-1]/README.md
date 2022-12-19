@@ -69,3 +69,43 @@ wafw00f:0            0.575 3.0
 dnsmasq:0            0.575 3.0
 ndscheduler:0        0.575 3.5
 ```
+
+### 提示例
+* kcptunを参考にした例
+```bash
+$ 実際のDockerfile(期待しているもの)
+- RUN set -xe \
+-     && apk add -U curl \
+-     && curl -sSL $WEBGOAT_URL > webgoat.jar \
+-     && apk del curl \
+-     && rm -rf /var/cache/apk/*
+
+$ 最後の行が欠落している(まだ記述されていない)Dockerfile
++ RUN set -xe \
++     && apk add -U curl \
++     && curl -sSL $WEBGOAT_URL > webgoat.jar \
++     && apk del curl \
+
+$ kcptun.DockerfileのRUN命令
+RUN set -xe \
+    && apk add [++ --no-cache] curl \
+    && curl -sSL ${KCPTUN_URL} | tar xz -C /usr/local/bin \
+    && apk del curl
+2行目の --no-cacheが欠落したDockerfileには存在していないので, 追加
+ここでは, 実際のDockerfileに対して, 欠落したDockerfileは"/var/cache/apk/*"のキャッシュを削除しない, space wastageの違反をしている
+よって, このstage wastageを解消する類似記述の検出を期待
+
+で, 実際のDockerfileで作成したイメージのコンテナ内の/var/cache/apk/*の内容と, kcptunを参考にして作成したDockerfileで作成したイメージのコンテナ内の/var/cache/apk/*の内容を比較する
+~/D/b/w/webgoat-v0.0.2 ❯❯❯ docker run -it --rm --name web1 webgoat:v0.0.1 tree /var/cache/apk
+/var/cache/apk
+
+0 directories, 0 files
+
+~/D/b/w/webgoat-v0.0.2 ❯❯❯ docker run -it --rm --name web2 webgoat:v0.0.1 tree /var/cache/apk
+/var/cache/apk
+
+0 directories, 0 files
+
+結果, キャッシュの削除という観点では, この2つのRUN命令の振る舞いは同じ, すなわち類似している
++α で参考になっている
+```
