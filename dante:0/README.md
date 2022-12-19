@@ -120,4 +120,14 @@ RUN apt-get update \
 
 0 directories, 1 file
 
+
+~/D/b/g/obfsproxy ❯❯❯ docker run -it --rm --name dante dante:v0.0.1 tree /var/lib/apt/lists/
+/var/lib/apt/lists/
+
+0 directories, 0 files
+~/D/b/g/obfsproxy ❯❯❯ docker run -it --rm --name dante chinadns:v0.0.1 tree /var/lib/apt/lists/
+/var/lib/apt/lists/
+
+0 directories, 0 files
+
 ```
