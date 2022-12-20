@@ -13,7 +13,7 @@ RUN curl -sSL "http://www.polishmywriting.com/download/atd_distribution${ATD_VER
 	&& tar -xzf /tmp/atd.tar.gz -C /usr/src/atd --strip-components 1 \
 	&& rm /tmp/atd.tar.gz*
 
-$ docker run -it --rm --name afterthedeadline:v0.0.1 tree /tmp
+$ docker run -it --rm --name afterthedeadline1 afterthedeadline:v0.0.1 tree /tmp
 /tmp
 
 0 directories, 0 files
@@ -25,7 +25,7 @@ RUN curl -sSL "http://www.polishmywriting.com/download/atd_distribution${ATD_VER
 	&& mkdir -p /usr/src/atd \
 	&& tar -xzf /tmp/atd.tar.gz -C /usr/src/atd --strip-components 1 
 
-$ docker run -it --rm --name afterthedeadline:v0.0.2 tree /tmp
+$ docker run -it --rm --name afterthedeadline2 afterthedeadline:v0.0.2 tree /tmp
 /tmp
 └── atd.tar.gz
 
@@ -63,4 +63,9 @@ RUN set -x \
 	)" \
 	&& apk add --no-cache --virtual .irssi-rundeps $runDeps \
 	&& apk del .build-deps
+
+$ docker run -it --rm --name znc znc:v0.0.1 tree /tmp
+/tmp
+
+0 directories, 0 files
 ```
