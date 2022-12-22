@@ -1,4 +1,5 @@
-# dockerfileに特化した類似記述の検索
+# ~~dockerfileに特化した類似記述の検索~~
+# Dockerfileにおけるコマンド単位での編集距離を利用した類似記述の検出
 
 ## 縛り
 ### ~~コマンドの順序関係を考慮すべき~~
@@ -43,7 +44,7 @@ Dockerfileの記述に慣れているユーザや仕組みを理解している�
 使用されていないキーも
 
 
-Dockerfile特有のバグ: RUN命令においてコマンドを複数利用する際に発生するバグ
+Dockerfile特有のバグ: RUN命令においてコマンドを複数利用する際に発生するアンチパターン
 1. ~~異なるベースイメージのDockerfileをコピーしてきた場合, ベースイメージの種類や振る舞いの違いによるバグを発生させてしまう可能性がある(ビルドの失敗)~~\
 ~~eg. パッケージのインストール忘れ[original:usePackagePrecedesAptInstall]~~
 2. イメージサイズの無駄遣い(space wastage)
@@ -52,16 +53,21 @@ Dockerfile特有のバグ: RUN命令においてコマンドを複数利用す�
 Dockerfile特有のバグ(命名) \
 @1: aptGetUpdatePrecedesInstall \
 @2: DL3009:aptGetInstallRmAptLists \
-(@3: DL3019:apkAddUseNoCache) \
+@3: (DL3019:apkAddUseNoCache) \
 @4: gpgVerifyAscRmAsc \
 ~~@5: original:usePackagePrecedesAptInstall~~\
 @6: rmRecurisveAfterMktempD \
 @7: tarSomethingRmTheSomething
 
+@8: original:forgotChownPackage \
+検出不可能 
+
 
 ## コンパイルチェッカーなのか, スタイルチェッカーなのか
 後者を実装, コンパイルチェッカーは, Dockerでのビルドログで十分? もちろんいらない訳ではない
 ビルドに成功する場合のアンチパターンは厄介. Hadolintで対応していればリントで対応出来るが, Hadolintに対応していないアンチパターンの場合は対応できない
+
+逆にアンチパターンを払い出すことができる？過去の知見(類似コード)から
 
 例えば, コンパイルチェックする前に検索を行えば, ビルドエラーを防ぐことが出来る?
 
@@ -81,6 +87,9 @@ Dockerfile特有のバグ(命名) \
 ## Levenshtein Distanceの適用
 今回の研究では, コマンド単位でLevenshtein Distanceを適用した. 
 
+## 提案手法
+
+
 ## ダミーノードの追加
 
 ## 評価手法
@@ -90,7 +99,7 @@ Dockerfile特有のバグ \
 @2: DL3009:aptGetInstallRmAptLists \
 @3: (DL3019:apkAddUseNoCache) \
 @4: gpgVerifyAscRmAsc \
-~~@5: original:usePackagePrecedesAptInstall~~  <- build前に実行すれば有用? \
+~~@5: original:usePackagePrecedesAptInstall~~  <- build前に実行すれば有用? <- 応用例として \
 @6: rmRecurisveAfterMktempD \
 @7: tarSomethingRmTheSomething \
 これらのバグを含んだDockerfileをクエリに検索を時に, 類似している(正解である可能性の高い)Dockerfileが検出出来るが, そのDockerfileを参照・参考にしたときにバグを修正することができれば, 参考になったと判断する. \
@@ -103,3 +112,7 @@ Dockerfile特有のバグ \
 
 ## 結論
 ### 検出可能
+*
+*
+* ENTRYPOINTは使うべき, ENTRYPOINTを使うことでビルド段階での記述漏れを防ぐことができる.
+* 例えば, ディレクトリ名レベルは抽象化しないといいかもしれない
